@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-class CustomersRedactJob < ActiveJob::Base
+class AppScopesUpdateJob < ActiveJob::Base
   def perform(shop_domain:, webhook:)
+    logger.info("#{self.class} started for shop '#{shop_domain}'")
     shop = Shop.find_by(shopify_domain: shop_domain)
 
     if shop.nil?
@@ -9,7 +10,7 @@ class CustomersRedactJob < ActiveJob::Base
       return
     end
 
-    shop.with_shopify_session do
-    end
+    shop.access_scopes = webhook["current"].join(",")
+    shop.save!
   end
 end

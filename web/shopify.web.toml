@@ -1,4 +1,5 @@
-type="backend"
+roles = ["backend"]
+webhooks_path = "api/webhooks/app_uninstalled"
 
 [commands]
 dev = "bin/rails server"
